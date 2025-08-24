@@ -51,12 +51,15 @@ const { title, description = "Personal portfolio and blog" } = Astro.props;
       .main-content {
         flex: 1;
         padding: 2rem;
-        margin-left: 280px; /* Width of the side navigation + increased spacing */
+        margin-left: 320px; /* Width of the side navigation + increased spacing */
+        margin-right: 6rem; /* Add right margin to center the content better */
+        max-width: calc(100vw - 380px); /* Prevent content from being too wide */
       }
       
       .container {
         max-width: 800px;
         padding: 1.5rem 0;
+        margin: 0 auto; /* Center the container */
       }
       
       a {
@@ -198,7 +201,9 @@ const { title, description = "Personal portfolio and blog" } = Astro.props;
       @media (max-width: 768px) {
         .main-content {
           margin-left: 0;
+          margin-right: 0;
           padding: 1rem;
+          max-width: none;
         }
         
         .layout-container {
@@ -207,6 +212,7 @@ const { title, description = "Personal portfolio and blog" } = Astro.props;
         
         .container {
           padding: 0;
+          margin: 0;
         }
       }
     </style>

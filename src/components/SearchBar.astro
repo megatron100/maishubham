@@ -118,18 +118,116 @@
     font-style: italic;
     text-align: center;
   }
+
+  /* Mobile styles */
+  @media (max-width: 768px) {
+    .search-container {
+      width: 40px;
+      transition: width 0.3s ease;
+    }
+
+    .search-container.expanded {
+      width: 200px;
+    }
+
+    .search-input {
+      width: 40px;
+      padding: 0.5rem;
+      padding-right: 0.5rem;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      pointer-events: auto;
+    }
+
+    .search-input.expanded {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      padding-right: 2.5rem;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      cursor: text;
+      pointer-events: auto;
+    }
+
+    .search-input.expanded:focus {
+      border-color: #93c5fd;
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+      outline: none;
+    }
+
+    .search-input::placeholder {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .search-input.expanded::placeholder {
+      opacity: 1;
+    }
+
+    .search-button {
+      right: 0.25rem;
+      color: #374151;
+      pointer-events: none;
+    }
+
+    .search-container.expanded .search-button {
+      pointer-events: auto;
+    }
+
+    .search-results {
+      width: 200px;
+    }
+  }
 </style>
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('search-input');
     const searchResults = document.getElementById('search-results');
+    const searchContainer = document.querySelector('.search-container');
     let posts = [];
     let debounceTimer;
     let postsLoaded = false;
 
+    // Mobile expand/collapse functionality
+    function handleMobileClick() {
+      if (window.innerWidth <= 768) {
+        searchContainer?.classList.add('expanded');
+        searchInput?.classList.add('expanded');
+        // Small delay to ensure the input is ready for focus
+        setTimeout(() => {
+          searchInput?.focus();
+        }, 50);
+      }
+    }
+
+    function handleMobileBlur() {
+      if (window.innerWidth <= 768) {
+        setTimeout(() => {
+          if (!searchInput?.value?.trim()) {
+            searchContainer?.classList.remove('expanded');
+            searchInput?.classList.remove('expanded');
+          }
+        }, 150); // Small delay to allow for result clicks
+      }
+    }
+
+    // Add mobile event listeners
+    searchInput?.addEventListener('click', handleMobileClick);
+    searchInput?.addEventListener('blur', handleMobileBlur);
+
+    // Re-check on resize
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768) {
+        searchContainer?.classList.remove('expanded');
+        searchInput?.classList.remove('expanded');
+      }
+    });
+
     // Only fetch posts when the user interacts with the search
-    searchInput.addEventListener('focus', () => {
+    searchInput?.addEventListener('focus', () => {
       if (!postsLoaded) {
         fetchPosts();
         postsLoaded = true;

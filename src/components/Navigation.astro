@@ -13,7 +13,7 @@ const navItems = [
 ];
 ---
 
-<nav class="side-nav">
+<nav class="side-nav" id="side-nav">
 <!-- <div class="logo">~/</div> -->
   <ul>
     {navItems.map((item) => {
@@ -40,7 +40,7 @@ const navItems = [
     position: fixed;
     top: 50%;
     transform: translateY(-50%);
-    left: 2rem;
+    left: 7rem;
     width: 200px;
     background: #d7d7d7;
     border-radius: 12px;
@@ -91,12 +91,52 @@ const navItems = [
   
   @media (max-width: 768px) {
     .side-nav {
-      position: relative;
+      position: fixed;
+      top: 0;
+      left: -100%;
+      transform: none;
+    width: 50vw;
+      height: 100vh;
+      margin-bottom: 0;
+      padding: 4rem 0.5rem 1rem;
+      z-index: 10000;
+      transition: left 0.3s ease;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .side-nav.active {
+      left: 0;
+    }
+
+    /* Backdrop overlay */
+    .side-nav::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 200px;
+      width: calc(100vw - 150px);
+      height: 100vh;
+      opacity: 0.5;
+      visibility: hidden;
+      z-index: -1;
+    }
+
+    /* content: '';
+      position: fixed;
       top: 0;
       left: 0;
-      transform: none;
-      width: 100%;
-      margin-bottom: 2rem;
+      width: 100vw;
+      height: 100vh;
+      backdrop-filter: blur(6px);
+      background: rgba(215, 215, 215, 0.6);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      z-index: 9999; */
+
+    .side-nav.active::before {
+      opacity: 1;
+      visibility: visible;
     }
   }
 </style>
