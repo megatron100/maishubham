@@ -1,5 +1,6 @@
 ---
 import Navigation from '../components/Navigation.astro';
+import TopNavigation from '../components/TopNavigation.astro';
 
 export interface Props {
   title: string;
@@ -43,7 +44,8 @@ const { title, description = "Personal portfolio and blog" } = Astro.props;
       
       .layout-container {
         display: flex;
-        min-height: 100vh;
+        min-height: calc(100vh - 3.5rem); /* Subtract top nav height */
+        margin-top: 3.5rem; /* Add top nav height */
       }
       
       .main-content {
@@ -210,6 +212,7 @@ const { title, description = "Personal portfolio and blog" } = Astro.props;
     </style>
   </head>
   <body>
+    <TopNavigation />
     <div class="layout-container">
       <Navigation />
       <div class="main-content">

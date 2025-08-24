@@ -1,0 +1,62 @@
+---
+import SearchBar from './SearchBar.astro';
+---
+
+<div class="top-nav">
+  <div class="top-nav-container">
+    <div class="site-title">Portfolio</div>
+    <div class="top-nav-right">
+      <SearchBar />
+    </div>
+  </div>
+</div>
+
+<style>
+  .top-nav {
+    background-color: white;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 0.75rem 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+  }
+
+  .top-nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .site-title {
+    font-weight: 500;
+    font-size: 1.1rem;
+    color: #1f2937;
+  }
+
+  .top-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .search-label {
+    font-size: 0.9rem;
+    color: #4b5563;
+    display: flex;
+    align-items: center;
+  }
+
+  @media (max-width: 768px) {
+    .top-nav-container {
+      padding: 0 1rem;
+    }
+    
+    .search-label {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,48 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Search Results">
+  <h1>Search Results</h1>
+  
+  <div id="search-query"></div>
+  <div id="search-results">
+    <p>Loading results...</p>
+  </div>
+</Layout>
+
+<script>
+  // Simple client-side search implementation
+  document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const query = urlParams.get('q');
+    const searchQueryEl = document.getElementById('search-query');
+    const searchResultsEl = document.getElementById('search-results');
+    
+    if (query) {
+      searchQueryEl.innerHTML = `<p>Showing results for: <strong>${query}</strong></p>`;
+      
+      // In a real implementation, you would:
+      // 1. Either fetch results from a backend API
+      // 2. Or use a client-side search library like Lunr.js or Fuse.js
+      // 3. Or integrate with a search service like Algolia
+      
+      // For this minimal example, we'll just show a placeholder
+      setTimeout(() => {
+        searchResultsEl.innerHTML = `
+          <p>This is a minimal search implementation.</p>
+          <p>To implement full search functionality, you could:</p>
+          <ul>
+            <li>Use Astro's content collections with filtering</li>
+            <li>Integrate a client-side search library like Lunr.js or Fuse.js</li>
+            <li>Connect to a search service like Algolia</li>
+          </ul>
+          <p>Your search query was: <code>${query}</code></p>
+        `;
+      }, 500);
+    } else {
+      searchQueryEl.innerHTML = '<p>No search query provided.</p>';
+      searchResultsEl.innerHTML = '';
+    }
+  });
+</script>

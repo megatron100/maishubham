@@ -1,0 +1,290 @@
+---
+---
+
+<div class="search-container">
+  <div class="search-wrapper">
+    <input 
+      type="text" 
+      placeholder="Search posts..." 
+      class="search-input" 
+      id="search-input"
+      aria-label="Search website"
+      autocomplete="off"
+    />
+    <button type="button" class="search-button">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+    </button>
+    <div class="search-results" id="search-results"></div>
+  </div>
+</div>
+
+<style>
+  .search-container {
+    position: relative;
+    width: 250px;
+  }
+
+  .search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 300px;
+    overflow-y: auto;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    margin-top: 0.5rem;
+    padding: 0.25rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+    display: none;
+    gap: 2px;
+  }
+  
+  .search-result-item {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    background: white;
+    border-radius: 4px;
+  }
+  
+  .search-result-item:hover {
+    background: #d7d7d7;
+  }
+  
+  .search-result-title {
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: #374151;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 0.875rem;
+    background: #fff;
+    color: #374151;
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
+
+  .search-input:focus {
+    border-color: #93c5fd;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+  }
+
+  .search-button {
+    position: absolute;
+    right: 0.5rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #9ca3af;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .search-button:hover {
+    color: #374151;
+  }
+  
+  mark {
+    background-color: rgba(59, 130, 246, 0.2);
+    color: #1f2937;
+    padding: 0 2px;
+    border-radius: 2px;
+  }
+  
+  .loading {
+    color: #6b7280;
+    font-style: italic;
+    text-align: center;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('search-input');
+    const searchResults = document.getElementById('search-results');
+    let posts = [];
+    let debounceTimer;
+    let postsLoaded = false;
+
+    // Only fetch posts when the user interacts with the search
+    searchInput.addEventListener('focus', () => {
+      if (!postsLoaded) {
+        fetchPosts();
+        postsLoaded = true;
+      }
+    });
+
+    // Search as user types
+    searchInput.addEventListener('input', () => {
+      // Fetch posts if not already loaded
+      if (!postsLoaded) {
+        fetchPosts();
+        postsLoaded = true;
+      }
+
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        const query = searchInput.value.trim().toLowerCase();
+        if (query.length > 1) {
+          filterAndDisplayResults(query);
+        } else {
+          searchResults.style.display = 'none';
+        }
+      }, 300); // 300ms debounce
+    });
+
+    // Close search results when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.search-container')) {
+        searchResults.style.display = 'none';
+      }
+    });
+
+    // Function to fetch posts from /thoughts endpoint
+    async function fetchPosts() {
+      try {
+       
+        const response = await fetch('/thoughts');
+        // Since the endpoint might return HTML, we'll extract the data
+        // In a real implementation, you'd create a proper API endpoint
+        const html = await response.text();
+        
+        // Create a temporary element to parse the HTML
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+        
+        // Extract posts from the HTML (this is an example, adjust based on your actual HTML structure)
+        const postElements = tempDiv.querySelectorAll('.post-list li');
+        
+        posts = Array.from(postElements).map(post => {
+          const titleEl = post.querySelector('.post-title');
+          const dateEl = post.querySelector('.post-date');
+          const url = titleEl.querySelector('a')?.getAttribute('href') || '';
+          
+          return {
+            title: titleEl.textContent.trim(),
+            url: url,
+            date: dateEl?.textContent.trim() || '',
+            excerpt: post.textContent.replace(titleEl.textContent, '').replace(dateEl?.textContent || '', '').trim().substring(0, 150)
+          };
+        });
+
+        // Hide the loading indicator if no search is active
+        if (!searchInput.value.trim()) {
+          searchResults.style.display = 'none';
+        }
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+        // Fallback to example data if fetch fails
+        // posts = [
+        //   { title: "Building Small Tools", url: "/thoughts/building-small-tools", date: "August 2025", excerpt: "How building small tools can improve your workflow..." },
+        //   { title: "Taste as Proxy for Curiosity", url: "/thoughts/taste-as-proxy-for-curiosity", date: "July 2025", excerpt: "How developing taste can drive curiosity and innovation..." }
+        // ];
+      }
+    }
+
+    // Filter and display results based on query
+    function filterAndDisplayResults(query) {
+      // Filter posts based on search query
+      const filteredPosts = posts.filter(post => {
+        return post.title.toLowerCase().includes(query) || 
+               post.excerpt.toLowerCase().includes(query);
+      });
+      
+      // Display results
+      if (filteredPosts.length > 0) {
+        searchResults.innerHTML = '';
+        
+        filteredPosts.forEach((post) => {
+          const resultItem = document.createElement('div');
+          resultItem.className = 'search-result-item';
+          
+          // Apply styles directly since CSS might not apply to dynamically created elements
+          resultItem.style.cssText = `
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            background: white;
+            border-radius: 4px;
+            display: block;
+          `;
+          
+          // Create title element with styles
+          const titleDiv = document.createElement('div');
+          titleDiv.className = 'search-result-title';
+          titleDiv.innerHTML = highlightMatch(post.title, query);
+          titleDiv.style.cssText = `
+            font-size: 0.95rem;
+            font-weight: 400;
+            color: #374151;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          `;
+          
+          resultItem.appendChild(titleDiv);
+          
+          // Add hover effects
+          resultItem.addEventListener('mouseenter', () => {
+            resultItem.style.background = '#d7d7d7';
+          });
+          
+          resultItem.addEventListener('mouseleave', () => {
+            resultItem.style.background = 'white';
+          });
+          
+          resultItem.addEventListener('click', () => {
+            window.location.href = post.url;
+          });
+          
+          searchResults.appendChild(resultItem);
+        });
+        
+        searchResults.style.display = 'block';
+      } else {
+        const noResultsItem = document.createElement('div');
+        noResultsItem.className = 'search-result-item';
+        noResultsItem.textContent = 'No results found';
+        noResultsItem.style.cssText = `
+          padding: 0.75rem 1rem;
+          background: white;
+          border-radius: 4px;
+          color: #6b7280;
+          font-style: italic;
+          text-align: center;
+        `;
+        searchResults.innerHTML = '';
+        searchResults.appendChild(noResultsItem);
+        searchResults.style.display = 'block';
+      }
+    }
+    
+    // Highlight matching text
+    function highlightMatch(text, query) {
+      const regex = new RegExp(`(${query.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi');
+      return text.replace(regex, '<mark>$1</mark>');
+    }
+  });
+</script>

@@ -2,7 +2,7 @@
 title: "building small tools"
 date: 2023-10-15
 draft: false
-description: "Why I prefer making focused utilities over comprehensive solutions"
+description: "Why I prefer on making focused utilities over comprehensive solutions"
 ---
 
 I have a folder on my computer called "small-tools" filled with single-purpose utilities I've built over the years. A JSON formatter. A color palette generator. A markdown table builder. None of them are particularly sophisticated, but I use them constantly.
