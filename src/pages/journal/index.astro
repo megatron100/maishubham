@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+const journalEntries = await getCollection('journal');
+const sortedEntries = journalEntries
+  .filter(entry => !entry.data.draft)
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+---
+
+<Layout title="Journal">
+  <h1>Journal</h1>
+  
+  <p>Daily musings, progress updates, and personal reflections.</p>
+  
+  {sortedEntries.length === 0 ? (
+    <p>No journal entries yet. Check back soon!</p>
+  ) : (
+    <ul class="post-list">
+      {sortedEntries.map((entry) => (
+        <li>
+          <div class="post-title">
+            <a href={`/journal/${entry.slug}`}>{entry.data.title}</a>
+          </div>
+          <div class="post-date">
+            {new Date(entry.data.date).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            })}
+            {entry.data.mood && (
+              <span style="margin-left: 0.5rem; font-style: italic;"> • Mood: {entry.data.mood}</span>
+            )}
+          </div>
+        </li>
+      ))}
+    </ul>
+  )}
+</Layout>

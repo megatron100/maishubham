@@ -1,0 +1,321 @@
+---
+export interface Props {
+  title: string;
+  description?: string;
+  showProfile?: boolean;
+}
+
+const { title, description = "Personal portfolio and blog", showProfile = false } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      :root {
+        --font-jetbrains-mono: 'JetBrains Mono', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      }
+      
+      body {
+        font-family: var(--font-jetbrains-mono);
+        line-height: 1.7;
+        color: #374151;
+        background: #fefcf6;
+        font-size: 17px;
+        font-weight: 400;
+        word-spacing: 0.1em;
+      }
+      
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      
+      nav {
+        margin-bottom: 40px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #e5e7eb;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      
+      nav ul {
+        list-style: none;
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+      
+      nav a {
+        color: #3b82f6;
+        text-decoration: none;
+        font-weight: 400;
+        transition: all 0.2s ease;
+        word-spacing: 0.1em;
+      }
+      
+      nav a:hover {
+        text-decoration: underline;
+        background: #eff6ff;
+        padding: 3px 6px;
+        margin: -3px -6px;
+        border-radius: 4px;
+      }
+      
+      .logo {
+        font-weight: 500;
+        color: #1f2937;
+      }
+      
+      a {
+        color: #3b82f6;
+        text-decoration: none;
+        transition: all 0.2s ease;
+      }
+      
+      a:hover {
+        text-decoration: underline;
+        background: #eff6ff;
+        padding: 3px 6px;
+        margin: -3px -6px;
+        border-radius: 4px;
+      }
+      
+      h1 {
+        font-size: 1.75rem;
+        margin-bottom: 1.4rem;
+        font-weight: 500;
+        color: #1f2937;
+      }
+      
+      h2 {
+        font-size: 1.4rem;
+        margin: 2.5rem 0 1.4rem 0;
+        font-weight: 500;
+        color: #1f2937;
+      }
+      
+      h3 {
+        font-size: 1.2rem;
+        margin: 2rem 0 1rem 0;
+        font-weight: 500;
+        color: #374151;
+      }
+      
+      .custom-h3 {
+        max-width: 32rem;
+        text-wrap: pretty;
+        font-size: .875rem;
+        line-height: 1.25rem;
+        --tw-text-opacity: 1;
+        color: rgb(107 114 128 / var(--tw-text-opacity));
+      }
+      
+      p {
+        margin-bottom: 1.4rem;
+        color: #4b5563;
+      }
+      
+      ul, ol {
+        margin-bottom: 1.4rem;
+        padding-left: 2rem;
+        color: #4b5563;
+      }
+      
+      code {
+        font-family: var(--font-jetbrains-mono);
+        background: #f3f4f6;
+        padding: 3px 6px;
+        border-radius: 4px;
+        font-size: 0.9em;
+        color: #374151;
+        border: 1px solid #e5e7eb;
+      }
+      
+      pre {
+        background: #f8fafc;
+        padding: 1.25rem;
+        border-radius: 6px;
+        overflow-x: auto;
+        margin-bottom: 1.5rem;
+        border: 1px solid #e2e8f0;
+        font-size: 0.9rem;
+      }
+      
+      pre code {
+        background: none;
+        padding: 0;
+        border: none;
+        color: #475569;
+      }
+      
+      blockquote {
+        border-left: 3px solid #d1d5db;
+        padding-left: 1.25rem;
+        margin: 1.5rem 0;
+        font-style: italic;
+        color: #6b7280;
+        background: #f9fafb;
+        padding: 1rem 1.25rem;
+        border-radius: 0 4px 4px 0;
+      }
+      
+      .post-meta {
+        color: #9ca3af;
+        font-size: 0.95rem;
+        margin-bottom: 1.2rem;
+        font-weight: 400;
+      }
+      
+      .post-list {
+        list-style: none;
+        padding: 0;
+      }
+      
+      .post-list li {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid #f3f4f6;
+      }
+      
+      .post-list li:last-child {
+        border-bottom: none;
+      }
+      
+      .post-title {
+        font-weight: 500;
+        font-size: 1.25rem;
+        color: #1f2937;
+      }
+      
+      .post-date {
+        color: #9ca3af;
+        font-size: 0.9rem;
+        font-weight: 400;
+      }
+      
+      .custom-h3 {
+        max-width: 32rem;
+        text-wrap: pretty;
+        font-size: .875rem;
+        line-height: 1.4rem;
+        color: #9ca3af;
+        font-weight: 400;
+      }
+      
+      @media (max-width: 640px) {
+        .container {
+          padding: 15px;
+        }
+        
+        nav {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 15px;
+        }
+        
+        nav ul {
+          gap: 15px;
+        }
+        
+        .profile-section {
+          flex-direction: column;
+        }
+      }
+      
+      /* Profile section styles */
+      .profile-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-top: 2rem;
+        gap: 2rem;
+      }
+      
+      .contact-info {
+        flex: 1;
+      }
+      
+      .photo-container {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      
+      .photo-frame {
+        border: 1px solid #e5e7eb;
+        padding: 5px;
+        border-radius: 4px;
+        background: #fff;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+      
+      .photo-frame:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      
+      .profile-photo {
+        display: block;
+        max-width: 100%;
+        height: auto;
+        border-radius: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <nav>
+        <div class="logo">~/</div>
+        <ul>
+          <li><a href="/">me</a></li>
+          <li><a href="/thoughts">thoughts</a></li>
+          <li><a href="/projects">projects</a></li>
+          <li><a href="/journal">journal</a></li>
+          <li><a href="/music">music</a></li>
+          <li><a href="/cv">cv</a></li>
+        </ul>
+      </nav>
+      <main>
+        <slot />
+        {showProfile && (
+          <div class="profile-section">
+            <div class="contact-info">
+              <h2>Contact</h2>
+              <p>
+                Email: [your-email]<br>
+                GitHub: <a href="https://github.com/yourusername">@yourusername</a><br>
+                Twitter: <a href="https://twitter.com/yourusername">@yourusername</a>
+              </p>
+            </div>
+            
+            <div class="photo-container">
+              <div class="photo-frame">
+                <!-- Replace the URL below with your actual photo -->
+                <img src="https://placehold.co/300x300" alt="Profile Photo" class="profile-photo">
+              </div>
+            </div>
+          </div>
+        )}
+      </main>
+    </div>
+  </body>
+</html>

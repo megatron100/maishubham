@@ -1,0 +1,36 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const journalEntries = await getCollection('journal');
+  return journalEntries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+
+<Layout title={entry.data.title}>
+  <article>
+    <header>
+      <h1>{entry.data.title}</h1>
+      <div class="post-meta">
+        {new Date(entry.data.date).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        })}
+      </div>
+    </header>
+    
+    <Content />
+    
+    <footer style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #eee;">
+      <a href="/journal">← Back to journal</a>
+    </footer>
+  </article>
+</Layout>

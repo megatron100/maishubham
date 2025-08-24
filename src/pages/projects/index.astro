@@ -1,0 +1,36 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+const projects = await getCollection('projects');
+const sortedProjects = projects.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+---
+
+<Layout title="Projects">
+  <h1>Projects</h1>
+  
+  <p>Things I've built, experiments, and side projects worth sharing.</p>
+  
+  {sortedProjects.length === 0 ? (
+    <p>No projects yet. Currently working on some exciting stuff!</p>
+  ) : (
+    <ul class="post-list">
+      {sortedProjects.map((project) => (
+        <li>
+          <div class="post-title">
+            <a href={`/projects/${project.slug}`}>{project.data.title}</a>
+          </div>
+          <p>{project.data.description}</p>
+          <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+            {project.data.demoUrl && (
+              <a href={project.data.demoUrl}>Demo</a>
+            )}
+            {project.data.repoUrl && (
+              <a href={project.data.repoUrl}>Code</a>
+            )}
+          </div>
+        </li>
+      ))}
+    </ul>
+  )}
+</Layout>
