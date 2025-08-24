@@ -1,0 +1,45 @@
+---
+---
+
+<div class="photo-container">
+  <div class="photo-frame">
+    <!-- Replace the URL below with your actual photo -->
+    <img src="https://placehold.co/300x300" alt="Profile Photo" class="profile-photo">
+  </div>
+</div>
+
+<style>
+  .photo-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .photo-frame {
+    border: 1px solid #e5e7eb;
+    padding: 5px;
+    border-radius: 4px;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .photo-frame:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .profile-photo {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-radius: 2px;
+  }
+
+  @media (max-width: 640px) {
+    .photo-container {
+      margin-top: 2rem;
+    }
+  }
+</style>

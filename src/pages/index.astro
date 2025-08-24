@@ -1,8 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import AboutSection from '../components/AboutSection.astro';
 ---
 
-<Layout title="About me" showProfile={true}>
+<Layout title="About me">
   <h1>Hello, I'm [Your Name]</h1>
   
   <p>I'm a software developer, thinker, and occasional writer based in [Your Location]. I enjoy building things, solving problems, and exploring the intersection of technology and human behavior.</p>
@@ -12,4 +13,6 @@ import Layout from '../layouts/Layout.astro';
   <p>When I'm not coding, you can find me [hobbies/interests]. I believe in the power of simple, well-crafted solutions and the importance of clear communication.</p>
   
   <p>Feel free to reach out if you want to chat about technology, collaborate on a project, or just say hello.</p>
+
+  <AboutSection />
 </Layout>

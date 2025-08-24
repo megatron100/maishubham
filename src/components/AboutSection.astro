@@ -1,0 +1,25 @@
+---
+import Contact from './Contact.astro';
+import Profile from './Profile.astro';
+---
+
+<div class="profile-section">
+  <Contact />
+  <Profile />
+</div>
+
+<style>
+  .profile-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 2rem;
+    gap: 2rem;
+  }
+
+  @media (max-width: 640px) {
+    .profile-section {
+      flex-direction: column;
+    }
+  }
+</style>
