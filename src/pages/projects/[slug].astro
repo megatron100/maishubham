@@ -18,7 +18,7 @@ const { Content } = await project.render();
   <article>
     <header>
       <h1>{project.data.title}</h1>
-      <p style="font-size: 1.1rem; color: #666;">{project.data.description}</p>
+      <p style="font-size: 1.1rem; color: var(--text-tertiary);">{project.data.description}</p>
       
       <div style="display: flex; gap: 1rem; margin: 1rem 0;">
         {project.data.demoUrl && (
@@ -32,7 +32,7 @@ const { Content } = await project.render();
     
     <Content />
     
-    <footer style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #eee;">
+    <footer style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-lighter);">
       <a href="/projects">← Back to projects</a>
     </footer>
   </article>

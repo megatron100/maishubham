@@ -40,12 +40,12 @@
     width: 100%;
     max-height: 300px;
     overflow-y: auto;
-    background: white;
-    border: 1px solid #e5e7eb;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
     border-radius: 6px;
     margin-top: 0.5rem;
     padding: 0.25rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px var(--shadow-sm);
     z-index: 9999;
     display: none;
     gap: 2px;
@@ -55,18 +55,18 @@
     padding: 0.75rem 1rem;
     cursor: pointer;
     transition: background 0.2s ease;
-    background: white;
+    background: var(--bg-secondary);
     border-radius: 4px;
   }
   
   .search-result-item:hover {
-    background: #d7d7d7;
+    background: var(--hover-subtle);
   }
   
   .search-result-title {
     font-size: 0.95rem;
     font-weight: 400;
-    color: #374151;
+    color: var(--text-primary);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -75,19 +75,19 @@
   .search-input {
     width: 100%;
     padding: 0.5rem 0.75rem;
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--border-primary);
     border-radius: 6px;
     font-family: 'JetBrains Mono', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
     font-size: 0.875rem;
-    background: #fff;
-    color: #374151;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
     outline: none;
     transition: border-color 0.2s ease;
   }
 
   .search-input:focus {
-    border-color: #93c5fd;
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+    border-color: var(--focus-border);
+    box-shadow: 0 0 0 2px var(--focus-ring);
   }
 
   .search-button {
@@ -96,25 +96,25 @@
     background: transparent;
     border: none;
     cursor: pointer;
-    color: #9ca3af;
+    color: var(--text-subtle);
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
   .search-button:hover {
-    color: #374151;
+    color: var(--text-primary);
   }
   
   mark {
-    background-color: rgba(59, 130, 246, 0.2);
-    color: #1f2937;
+    background-color: var(--highlight-bg);
+    color: var(--text-secondary);
     padding: 0 2px;
     border-radius: 2px;
   }
   
   .loading {
-    color: #6b7280;
+    color: var(--text-muted);
     font-style: italic;
     text-align: center;
   }
@@ -145,15 +145,15 @@
       width: 100%;
       padding: 0.5rem 0.75rem;
       padding-right: 2.5rem;
-      background: #fff;
-      border: 1px solid #e5e7eb;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-primary);
       cursor: text;
       pointer-events: auto;
     }
 
     .search-input.expanded:focus {
-      border-color: #93c5fd;
-      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+      border-color: var(--focus-border);
+      box-shadow: 0 0 0 2px var(--focus-ring);
       outline: none;
     }
 
@@ -168,7 +168,7 @@
 
     .search-button {
       right: 0.25rem;
-      color: #374151;
+      color: var(--text-primary);
       pointer-events: none;
     }
 
@@ -324,7 +324,7 @@
             padding: 0.75rem 1rem;
             cursor: pointer;
             transition: background 0.2s ease;
-            background: white;
+            background: var(--bg-secondary);
             border-radius: 4px;
             display: block;
           `;
@@ -333,24 +333,16 @@
           const titleDiv = document.createElement('div');
           titleDiv.className = 'search-result-title';
           titleDiv.innerHTML = highlightMatch(post.title, query);
-          titleDiv.style.cssText = `
-            font-size: 0.95rem;
-            font-weight: 400;
-            color: #374151;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-          `;
           
           resultItem.appendChild(titleDiv);
           
-          // Add hover effects
+          // Add hover effects using CSS classes instead of inline styles
           resultItem.addEventListener('mouseenter', () => {
-            resultItem.style.background = '#d7d7d7';
+            resultItem.style.background = 'var(--hover-subtle)';
           });
           
           resultItem.addEventListener('mouseleave', () => {
-            resultItem.style.background = 'white';
+            resultItem.style.background = 'var(--bg-secondary)';
           });
           
           resultItem.addEventListener('click', () => {
@@ -367,9 +359,9 @@
         noResultsItem.textContent = 'No results found';
         noResultsItem.style.cssText = `
           padding: 0.75rem 1rem;
-          background: white;
+          background: var(--bg-secondary);
           border-radius: 4px;
-          color: #6b7280;
+          color: var(--text-muted);
           font-style: italic;
           text-align: center;
         `;

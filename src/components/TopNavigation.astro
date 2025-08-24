@@ -14,19 +14,37 @@ import SearchBar from './SearchBar.astro';
     <div class="site-title">Portfolio</div>
     <div class="top-nav-right">
       <SearchBar />
+      <!-- Theme toggle button -->
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
     </div>
   </div>
 </div>
 
 <style>
   .top-nav {
-    background-color: white;
-    border-bottom: 1px solid #e5e7eb;
+    background-color: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-primary);
     padding: 0.75rem 0;
     position: fixed;
     top: 0;
     width: 100%;
     z-index: 100;
+    transition: all 0.3s ease;
   }
 
   .mobile-menu-toggle {
@@ -47,7 +65,7 @@ import SearchBar from './SearchBar.astro';
   .hamburger-line {
     width: 20px;
     height: 2px;
-    background: #6e78dd;
+    background: var(--text-primary);
     transition: all 0.3s ease;
     transform-origin: center;
   }
@@ -77,7 +95,8 @@ import SearchBar from './SearchBar.astro';
   .site-title {
     font-weight: 500;
     font-size: 1.1rem;
-    color: #1f2937;
+    color: var(--text-secondary);
+    transition: color 0.3s ease;
   }
 
   .top-nav-right {
@@ -85,10 +104,58 @@ import SearchBar from './SearchBar.astro';
     align-items: center;
     gap: 1rem;
   }
+
+  .theme-toggle {
+    background: transparent;
+    border: 1px solid var(--border-primary);
+    border-radius: 8px;
+    padding: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+
+  .theme-toggle:hover {
+    background: var(--bg-tertiary);
+    border-color: var(--border-secondary);
+  }
+
+  .theme-toggle .sun-icon,
+  .theme-toggle .moon-icon {
+    position: absolute;
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+  }
+
+  .theme-toggle .sun-icon {
+    opacity: 1;
+    transform: rotate(0deg);
+  }
+
+  .theme-toggle .moon-icon {
+    opacity: 0;
+    transform: rotate(90deg);
+  }
+
+  /* Dark mode styles */
+  :root.dark .theme-toggle .sun-icon {
+    opacity: 0;
+    transform: rotate(90deg);
+  }
+
+  :root.dark .theme-toggle .moon-icon {
+    opacity: 1;
+    transform: rotate(0deg);
+  }
   
   .search-label {
     font-size: 0.9rem;
-    color: #4b5563;
+    color: var(--text-tertiary);
     display: flex;
     align-items: center;
   }
@@ -112,7 +179,36 @@ import SearchBar from './SearchBar.astro';
   document.addEventListener('DOMContentLoaded', () => {
     const menuToggle = document.getElementById('mobile-menu-toggle');
     const sideNav = document.getElementById('side-nav');
+    const themeToggle = document.getElementById('theme-toggle');
     
+    // Theme toggle functionality
+    const toggleTheme = () => {
+      const isDark = document.documentElement.classList.contains('dark');
+      
+      if (isDark) {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+      } else {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      }
+    };
+
+    // Theme toggle event listener
+    themeToggle?.addEventListener('click', toggleTheme);
+
+    // Listen for system theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      if (!localStorage.getItem('theme')) {
+        if (e.matches) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      }
+    });
+
+    // Mobile menu functionality
     if (!menuToggle || !sideNav) return;
     
     const navLinks = sideNav.querySelectorAll('.nav-link');

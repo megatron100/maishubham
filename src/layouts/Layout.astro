@@ -20,6 +20,19 @@ const { title, description = "Personal portfolio and blog" } = Astro.props;
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- Theme detection script - runs before page renders to prevent flash -->
+    <script is:inline>
+      (function() {
+        const savedTheme = localStorage.getItem('theme');
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+    
     <style>
       * {
         margin: 0;
@@ -29,19 +42,102 @@ const { title, description = "Personal portfolio and blog" } = Astro.props;
       
       :root {
         --font-jetbrains-mono: 'JetBrains Mono', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        
+        /* Light mode colors */
+        --bg-primary: #fefcf6;
+        --bg-secondary: #ffffff;
+        --bg-tertiary: #f3f4f6;
+        --bg-accent: #eff6ff;
+        --text-primary: #374151;
+        --text-secondary: #1f2937;
+        --text-tertiary: #4b5563;
+        --text-inverse: #f9fafb;
+        --border-primary: #e5e7eb;
+        --border-secondary: #d1d5db;
+        --accent-primary: #3b82f6;
+        --accent-secondary: #60a5fa;
+        --accent-hover: #1e3a8a;
+        --nav-bg: #d7d7d7;
+        --nav-hover: #f3f4f6;
+        --shadow-light: rgba(0, 0, 0, 0.05);
+        --shadow-medium: rgba(0, 0, 0, 0.1);
+        
+        /* Additional color variables for components */
+        --text-muted: #6b7280;
+        --text-subtle: #9ca3af;
+        --border-light: #e5e7eb;
+        --border-lighter: #eeeeee;
+        --bg-code: #f8fafc;
+        --border-code: #e2e8f0;
+        --text-code: #475569;
+        --bg-quote: #f9fafb;
+        --border-quote: #d1d5db;
+        --focus-ring: rgba(59, 130, 246, 0.1);
+        --focus-border: #93c5fd;
+        --hover-subtle: #d7d7d7;
+        --shadow-sm: rgba(0, 0, 0, 0.1);
+        --highlight-bg: rgba(59, 130, 246, 0.2);
+        --success-color: #10b981;
+        --warning-color: #f59e0b;
+        --error-color: #ef4444;
+        --info-color: #3b82f6;
+        --bg-pattern: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23f1f5f9' fill-opacity='0.5' fill-rule='evenodd'/%3E%3C/svg%3E");
+      }
+      
+      :root.dark {
+        /* Dark mode colors */
+        --bg-primary: #111827;
+        --bg-secondary: #1f2937;
+        --bg-tertiary: #374151;
+        --bg-accent: #1e3a8a;
+        --text-primary: #e5e7eb;
+        --text-secondary: #f9fafb;
+        --text-tertiary: #d1d5db;
+        --text-inverse: #1f2937;
+        --border-primary: #374151;
+        --border-secondary: #4b5563;
+        --accent-primary: #60a5fa;
+        --accent-secondary: #3b82f6;
+        --accent-hover: #1e40af;
+        --nav-bg: #374151;
+        --nav-hover: #4b5563;
+        --shadow-light: rgba(0, 0, 0, 0.25);
+        --shadow-medium: rgba(0, 0, 0, 0.4);
+        
+        /* Additional color variables for components */
+        --text-muted: #9ca3af;
+        --text-subtle: #6b7280;
+        --border-light: #4b5563;
+        --border-lighter: #374151;
+        --bg-code: #1f2937;
+        --border-code: #374151;
+        --text-code: #d1d5db;
+        --bg-quote: #1f2937;
+        --border-quote: #374151;
+        --focus-ring: rgba(59, 130, 246, 0.2);
+        --focus-border: #60a5fa;
+        --hover-subtle: #4b5563;
+        --shadow-sm: rgba(0, 0, 0, 0.3);
+        --highlight-bg: rgba(96, 165, 250, 0.2);
+        --success-color: #34d399;
+        --warning-color: #fbbf24;
+        --error-color: #f87171;
+        --info-color: #60a5fa;
+        --bg-pattern: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23374151' fill-opacity='0.3' fill-rule='evenodd'/%3E%3C/svg%3E");
       }
       
       body {
         font-family: var(--font-jetbrains-mono);
         line-height: 1.7;
-        color: #374151;
-        background: #fefcf6;
-        background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23f1f5f9' fill-opacity='0.5' fill-rule='evenodd'/%3E%3C/svg%3E");
+        color: var(--text-primary);
+        background: var(--bg-primary);
+        background-image: var(--bg-pattern);
         font-size: 17px;
         font-weight: 400;
         word-spacing: 0.1em;
+        transition: background-color 0.3s ease, color 0.3s ease;
       }
-      
+
       .layout-container {
         display: flex;
         min-height: calc(100vh - 3.5rem); /* Subtract top nav height */
@@ -61,16 +157,16 @@ const { title, description = "Personal portfolio and blog" } = Astro.props;
         padding: 1.5rem 0;
         margin: 0 auto; /* Center the container */
       }
-      
+
       a {
-        color: #3b82f6;
+        color: var(--accent-primary);
         text-decoration: none;
         transition: all 0.2s ease;
       }
       
       a:hover {
         text-decoration: underline;
-        background: #eff6ff;
+        background: var(--bg-accent);
         padding: 3px 6px;
         margin: -3px -6px;
         border-radius: 4px;
@@ -80,21 +176,24 @@ const { title, description = "Personal portfolio and blog" } = Astro.props;
         font-size: 1.75rem;
         margin-bottom: 1.4rem;
         font-weight: 500;
-        color: #1f2937;
+        color: var(--text-secondary);
+        transition: color 0.3s ease;
       }
       
       h2 {
         font-size: 1.4rem;
         margin: 2.5rem 0 1.4rem 0;
         font-weight: 500;
-        color: #1f2937;
+        color: var(--text-secondary);
+        transition: color 0.3s ease;
       }
       
       h3 {
         font-size: 1.2rem;
         margin: 2rem 0 1rem 0;
         font-weight: 500;
-        color: #374151;
+        color: var(--text-primary);
+        transition: color 0.3s ease;
       }
       
       .custom-h3 {
@@ -102,38 +201,37 @@ const { title, description = "Personal portfolio and blog" } = Astro.props;
         text-wrap: pretty;
         font-size: .875rem;
         line-height: 1.25rem;
-        --tw-text-opacity: 1;
-        color: rgb(107 114 128 / var(--tw-text-opacity));
+        color: var(--text-tertiary);
       }
       
       p {
         margin-bottom: 1.4rem;
-        color: #4b5563;
+        color: var(--text-tertiary);
       }
       
       ul, ol {
         margin-bottom: 1.4rem;
         padding-left: 2rem;
-        color: #4b5563;
+        color: var(--text-tertiary);
       }
       
       code {
         font-family: var(--font-jetbrains-mono);
-        background: #f3f4f6;
+        background: var(--bg-tertiary);
         padding: 3px 6px;
         border-radius: 4px;
         font-size: 0.9em;
-        color: #374151;
-        border: 1px solid #e5e7eb;
+        color: var(--text-primary);
+        border: 1px solid var(--border-light);
       }
       
       pre {
-        background: #f8fafc;
+        background: var(--bg-code);
         padding: 1.25rem;
         border-radius: 6px;
         overflow-x: auto;
         margin-bottom: 1.5rem;
-        border: 1px solid #e2e8f0;
+        border: 1px solid var(--border-code);
         font-size: 0.9rem;
       }
       
@@ -141,22 +239,22 @@ const { title, description = "Personal portfolio and blog" } = Astro.props;
         background: none;
         padding: 0;
         border: none;
-        color: #475569;
+        color: var(--text-code);
       }
       
       blockquote {
-        border-left: 3px solid #d1d5db;
+        border-left: 3px solid var(--border-quote);
         padding-left: 1.25rem;
         margin: 1.5rem 0;
         font-style: italic;
-        color: #6b7280;
-        background: #f9fafb;
+        color: var(--text-muted);
+        background: var(--bg-quote);
         padding: 1rem 1.25rem;
         border-radius: 0 4px 4px 0;
       }
       
       .post-meta {
-        color: #9ca3af;
+        color: var(--text-subtle);
         font-size: 0.95rem;
         margin-bottom: 1.2rem;
         font-weight: 400;
@@ -170,7 +268,7 @@ const { title, description = "Personal portfolio and blog" } = Astro.props;
       .post-list li {
         margin-bottom: 1.5rem;
         padding-bottom: 1.5rem;
-        border-bottom: 1px solid #f3f4f6;
+        border-bottom: 1px solid var(--bg-tertiary);
       }
       
       .post-list li:last-child {
@@ -180,11 +278,11 @@ const { title, description = "Personal portfolio and blog" } = Astro.props;
       .post-title {
         font-weight: 500;
         font-size: 1.25rem;
-        color: #1f2937;
+        color: var(--text-secondary);
       }
       
       .post-date {
-        color: #9ca3af;
+        color: var(--text-subtle);
         font-size: 0.9rem;
         font-weight: 400;
       }
@@ -194,7 +292,7 @@ const { title, description = "Personal portfolio and blog" } = Astro.props;
         text-wrap: pretty;
         font-size: .875rem;
         line-height: 1.4rem;
-        color: #9ca3af;
+        color: var(--text-subtle);
         font-weight: 400;
       }
       
