@@ -11,7 +11,7 @@
       aria-label="Search website"
       autocomplete="off"
     />
-    <button type="button" class="search-button">
+    <button type="button" class="search-button" id="search-button">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="11" cy="11" r="8"></circle>
         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -124,10 +124,18 @@
     .search-container {
       width: 40px;
       transition: width 0.3s ease;
+      position: relative;
+      z-index: 200; /* Higher z-index to overlap site title */
     }
 
     .search-container.expanded {
       width: 200px;
+      position: absolute;
+      right: 0;
+      z-index: 110;
+      background: var(--bg-secondary);
+      padding: 5px;
+      border-radius: 6px;
     }
 
     .search-input {
@@ -149,6 +157,8 @@
       border: 1px solid var(--border-primary);
       cursor: text;
       pointer-events: auto;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px var(--shadow-sm);
     }
 
     .search-input.expanded:focus {
@@ -169,15 +179,14 @@
     .search-button {
       right: 0.25rem;
       color: var(--text-primary);
-      pointer-events: none;
-    }
-
-    .search-container.expanded .search-button {
-      pointer-events: auto;
+      pointer-events: auto; /* Always enable pointer events */
+      cursor: pointer;
     }
 
     .search-results {
       width: 200px;
+      position: absolute;
+      right: 0;
     }
   }
 </style>
@@ -187,9 +196,23 @@
     const searchInput = document.getElementById('search-input');
     const searchResults = document.getElementById('search-results');
     const searchContainer = document.querySelector('.search-container');
+    const searchButton = document.getElementById('search-button');
     let posts = [];
     let debounceTimer;
     let postsLoaded = false;
+
+    // Function to collapse the search bar and clear its text
+    function collapseSearchBar() {
+      if (searchContainer?.classList.contains('expanded')) {
+        // Clear input text
+        if (searchInput) (searchInput as HTMLInputElement).value = '';
+        // Collapse the search
+        searchContainer?.classList.remove('expanded');
+        searchInput?.classList.remove('expanded');
+        // Hide results
+        if (searchResults) searchResults.style.display = 'none';
+      }
+    }
 
     // Mobile expand/collapse functionality
     function handleMobileClick() {
@@ -203,26 +226,39 @@
       }
     }
 
+    // Handle mobile blur - close if clicking elsewhere on page
     function handleMobileBlur() {
       if (window.innerWidth <= 768) {
+        // Don't close immediately to allow for clicking on search results
         setTimeout(() => {
-          if (!searchInput?.value?.trim()) {
-            searchContainer?.classList.remove('expanded');
-            searchInput?.classList.remove('expanded');
-          }
-        }, 150); // Small delay to allow for result clicks
+          // Note: We're not checking the input value anymore
+          // This function is still needed for the blur event, but the actual collapse
+          // logic is now handled by the document click handler
+        }, 150);
       }
     }
 
     // Add mobile event listeners
     searchInput?.addEventListener('click', handleMobileClick);
     searchInput?.addEventListener('blur', handleMobileBlur);
+    
+    // Search button should toggle search on mobile
+    searchButton?.addEventListener('click', () => {
+      if (window.innerWidth <= 768) {
+        if (searchContainer?.classList.contains('expanded')) {
+          // If already expanded, collapse it and clear text
+          collapseSearchBar();
+        } else {
+          // If collapsed, expand it
+          handleMobileClick();
+        }
+      }
+    });
 
     // Re-check on resize
     window.addEventListener('resize', () => {
       if (window.innerWidth > 768) {
-        searchContainer?.classList.remove('expanded');
-        searchInput?.classList.remove('expanded');
+        collapseSearchBar();
       }
     });
 
@@ -244,8 +280,8 @@
 
       clearTimeout(debounceTimer);
       debounceTimer = setTimeout(() => {
-        const query = searchInput.value.trim().toLowerCase();
-        if (query.length > 1) {
+        const query = (searchInput as HTMLInputElement).value.trim().toLowerCase();
+        if (query.length > 0) {
           filterAndDisplayResults(query);
         } else {
           searchResults.style.display = 'none';
@@ -255,8 +291,16 @@
 
     // Close search results when clicking outside
     document.addEventListener('click', (e) => {
-      if (!e.target.closest('.search-container')) {
+      if (!(e.target as Element).closest('.search-container')) {
         searchResults.style.display = 'none';
+        
+        // For mobile: also close expanded search if clicking outside
+        if (window.innerWidth <= 768) {
+          if (searchContainer?.classList.contains('expanded')) {
+            // Use the helper function to collapse and clear
+            collapseSearchBar();
+          }
+        }
       }
     });
 
@@ -290,7 +334,7 @@
         });
 
         // Hide the loading indicator if no search is active
-        if (!searchInput.value.trim()) {
+        if (!(searchInput as HTMLInputElement).value.trim()) {
           searchResults.style.display = 'none';
         }
       } catch (error) {

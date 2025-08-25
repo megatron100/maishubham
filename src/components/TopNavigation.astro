@@ -97,12 +97,14 @@ import SearchBar from './SearchBar.astro';
     font-size: 1.1rem;
     color: var(--text-secondary);
     transition: color 0.3s ease;
+    z-index: 1; /* Lower z-index than search bar in mobile */
   }
 
   .top-nav-right {
     display: flex;
     align-items: center;
     gap: 1rem;
+    position: relative;
   }
 
   .theme-toggle {
