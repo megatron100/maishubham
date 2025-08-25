@@ -1,0 +1,80 @@
+---
+interface Props {
+  textToCopy: string;
+  className?: string;
+}
+
+const { textToCopy, className = "" } = Astro.props;
+---
+
+<button type="button" class={`copy-button ${className}`} aria-label="Copy text">
+  <svg class="copy-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+  </svg>
+  <svg class="check-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="20 6 9 17 4 12"></polyline>
+  </svg>
+</button>
+
+<style>
+  .copy-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    margin-left: 6px;
+    border-radius: 4px;
+    color: var(--text-tertiary, #666);
+    transition: color 0.3s ease, background-color 0.3s ease;
+    vertical-align: middle;
+    position: relative;
+  }
+  
+  .copy-button:hover {
+    color: var(--link-color, #0066cc);
+  }
+  
+  .copy-icon, .check-icon {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .check-icon {
+    opacity: 0;
+  }
+  
+  .copy-button.copied .copy-icon {
+    opacity: 0;
+  }
+  
+  .copy-button.copied .check-icon {
+    opacity: 1;
+    color: var(--text-primary, #000);
+  }
+</style>
+
+<script define:vars={{ textToCopy }}>
+  document.addEventListener('DOMContentLoaded', () => {
+    const copyButtons = document.querySelectorAll('.copy-button');
+    
+    copyButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        navigator.clipboard.writeText(textToCopy).then(() => {
+          // Add the copied class for visual feedback
+          button.classList.add('copied');
+          
+          // Reset after 2 seconds
+          setTimeout(() => {
+            button.classList.remove('copied');
+          }, 2000);
+        }).catch(err => {
+          console.error('Could not copy text: ', err);
+        });
+      });
+    });
+  });
+</script>
