@@ -4,6 +4,7 @@ description: "A simple, fast JSON formatting and validation tool"
 demoUrl: "/demos/json-formatter"
 repoUrl: "https://github.com/yourusername/json-formatter"
 date: 2023-10-10
+draft: true
 ---
 
 A lightweight web-based JSON formatter and validator that I built to solve a recurring problem in my development workflow. I was constantly copying JSON from APIs and logs into online formatters, but most of them were cluttered with ads or had privacy concerns.
