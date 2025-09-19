@@ -1,0 +1,15 @@
+---
+title: "I am uno addict"
+date: 2025-09-19
+draft: false
+mood: "Gambler"
+---
+
+I love UNO. Before when I used to see meme related to uno reverse I could not really understad so I decided to give uno mobile app a try and I love this game, but company behind this is evil. This game is rigged as hell. They make you pay for coins no matter how good you are at game
+
+## So I purchased physical cards
+
+And I'm loving it.
+
+Give it a try. 
+<a src="https://www.amazon.in/Mattel-Playing-Above-Adult-Multicolor/dp/B00GTJSGXE?crid=ZUH6PY304DRH&dib=eyJ2IjoiMSJ9.pSBbd6oumPyhMFBwMiBQT7ZdFj5e7RIpjj0-_PQbG95BjlpGSMr3UKsBxEWi0T0DWJQ70hoB2JYn-52vE6Yt90JTGiN-VJdDRGxGAcUnG_-Ihogi65lh1zNgiQo7Bph9ej9RjHDbN_RKaG-WkORrq_zuVHtfDwCcFYDIa2BmKJI2tPAi-iI_R9xaB8SNrqjbeQaPkrzipToU6yWzlu41nCiHu_RX7bm5fm18gCiXkMBC2jS9L6PUggFdiH48s9XVMT-XoKUafZiKLi38oED2GiPzfpiho5X3A56lvI74ar4.BS-vtpjgKt5dmEr5rtrzDUYDXerbb6j86NRIHxyvPX8&dib_tag=se&keywords=uno&qid=1758267438&sprefix=un%2Caps%2C351&sr=8-6&th=1&linkCode=ll1&tag=megatronblogg-21&linkId=4206cc32fa43b1078cbf1fe592115c7e&language=en_IN&ref_=as_li_ss_tl">Link</a>
