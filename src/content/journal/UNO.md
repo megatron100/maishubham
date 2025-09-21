@@ -24,3 +24,5 @@ Macbook m4
 
 
 
+<a href="https://www.amazon.in/Crucial%C2%AE-X9-1TB-Portable-SSD/dp/B0CGW1FQV4?crid=2C7D7XTMEORNH&dib=eyJ2IjoiMSJ9.39ksY55QhKrLXIvEJrbq00tUXwa9KmaHpoTA00T4et3RGiLfhk_ac0CzaL5ZTEsCjOK-OlKhnDsSgusRbUX4oQzjyZvCD5AF1gCM5oLuK8l_3EEkG_sbwpiLNNhtMTihfLF0usy4_9VD8llJlLWwucTfP4g79g69flLYaAtPXlbI-lmuw6pn_XxtyRbjH0VaHV5xozCz88Vg8QZNORYlUoRaEKRUCyBaGGhGGOS3dSM.-ho4CAG1Yrl8uz4JcZzHysA3jwc3_XZL2JBrDNNu6zY&dib_tag=se&keywords=external%2Bssd%2B256%2Bgb%2Bcrucial&qid=1758473444&sprefix=external%2Bssd%2B256%2Bgb%2Bcrusia%2Caps%2C299&sr=8-4&th=1&linkCode=ll1&tag=megatronblogg-21&linkId=ae39ec76e0fbee3cea394cbd244f3284&language=en_IN&ref_=as_li_ss_tl">Crucial SSD</a>
+
